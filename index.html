@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>사랑빛교회</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+
+<style>
+:root{
+  --navy:#061326;
+  --navy2:#0b1d36;
+  --gold:#f5c76b;
+  --gold2:#ffdd96;
+  --cream:#fff7e8;
+  --text:#f8f1df;
+  --muted:#b9c0cc;
+  --line:rgba(245,199,107,.26);
+  --glass:rgba(255,255,255,.075);
+  --shadow:0 34px 100px rgba(0,0,0,.46);
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  font-family:Pretendard,system-ui,sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 80% 10%,rgba(245,199,107,.28),transparent 30%),
+    radial-gradient(circle at 15% 5%,rgba(54,98,160,.28),transparent 34%),
+    linear-gradient(180deg,#061326 0%,#07101f 58%,#050914 100%);
+  overflow-x:hidden;
+}
+
+a{
+  text-decoration:none;
+  color:inherit;
+}
+
+.noise{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.045;
+  z-index:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.light-cross{
+  position:fixed;
+  right:5vw;
+  top:58px;
+  width:260px;
+  height:390px;
+  z-index:0;
+  pointer-events:none;
+  opacity:.78;
+}
+
+.light-cross::before{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:0;
+  width:10px;
+  height:310px;
+  transform:translateX(-50%);
+  background:linear-gradient(180deg,transparent,var(--gold2),transparent);
+  filter:blur(.4px);
+  box-shadow:0 0 30px rgba(255,221,150,.95),0 0 90px rgba(255,221,150,.55);
+}
+
+.light-cross::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:95px;
+  width:185px;
+  height:9px;
+  transform:translateX(-50%);
+  background:linear-gradient(90deg,transparent,var(--gold2),transparent);
+  box-shadow:0 0 32px rgba(255,221,150,.85);
+}
+
+.header{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  z-index:50;
+  height:82px;
+  border-bottom:1px solid rgba(245,199,107,.18);
+  background:rgba(6,19,38,.78);
+  backdrop-filter:blur(24px);
+}
+
+.header-inner{
+  width:min(1180px,calc(100% - 32px));
+  height:100%;
+  margin:0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex-shrink:0;
+}
+
+.brand-mark{
+  width:44px;
+  height:44px;
+  border-radius:15px;
+  display:grid;
+  place-items:center;
+  color:#061326;
+  font-weight:950;
+  background:linear-gradient(135deg,var(--gold2),var(--gold));
+  box-shadow:0 0 34px rgba(245,199,107,.28);
+}
+
+.brand-text b{
+  display:block;
+  font-size:22px;
+  letter-spacing:-.07em;
+}
+
+.brand-text span{
+  display:block;
+  margin-top:2px;
+  font-size:10px;
+  letter-spacing:.18em;
+  color:var(--gold);
+  font-weight:900;
+}
+
+.nav{
+  display:flex;
+  align-items:center;
+  gap:4px;
+  font-size:14px;
+  font-weight:850;
+  color:#efe6d4;
+}
+
+.nav a{
+  position:relative;
+  padding:12px 11px;
+  border-radius:12px;
+  opacity:.78;
+  transition:.24s;
+}
+
+.nav a:hover,
+.nav a.active{
+  opacity:1;
+  background:rgba(245,199,107,.09);
+}
+
+.nav a::after{
+  content:"";
+  position:absolute;
+  left:12px;
+  right:12px;
+  bottom:6px;
+  height:2px;
+  border-radius:999px;
+  background:linear-gradient(90deg,var(--gold),var(--gold2));
+  transform:scaleX(0);
+  transition:.25s;
+}
+
+.nav a:hover::after,
+.nav a.active::after{
+  transform:scaleX(1);
+}
+
+.header-cta{
+  padding:12px 17px;
+  border-radius:999px;
+  color:#061326;
+  font-weight:950;
+  font-size:14px;
+  background:linear-gradient(135deg,var(--gold2),var(--gold));
+  box-shadow:0 14px 28px rgba(245,199,107,.18);
+  flex-shrink:0;
+}
+
+.mobile-menu-btn{
+  display:none;
+  border:0;
+  border-radius:999px;
+  padding:12px 16px;
+  font-weight:950;
+  color:#061326;
+  background:linear-gradient(135deg,var(--gold2),var(--gold));
+}
+
+.mobile-menu{
+  position:fixed;
+  inset:0;
+  display:none;
+  z-index:100;
+  padding:24px;
+  background:rgba(6,19,38,.96);
+  backdrop-filter:blur(20px);
+}
+
+.mobile-menu.open{
+  display:block;
+}
+
+.mobile-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.close-btn{
+  border:1px solid var(--line);
+  color:var(--cream);
+  background:rgba(255,255,255,.08);
+  border-radius:999px;
+  padding:12px 16px;
+  font-weight:950;
+}
+
+.mobile-list{
+  margin-top:52px;
+  display:grid;
+  gap:14px;
+}
+
+.mobile-list a{
+  display:grid;
+  grid-template-columns:62px 1fr;
+  align-items:center;
+  padding:20px;
+  border-radius:26px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.06);
+}
+
+.mobile-list b{
+  color:var(--gold);
+  font-size:19px;
+}
+
+.mobile-list span{
+  font-size:26px;
+  font-weight:950;
+  letter-spacing:-.07em;
+}
+
+.wrap{
+  position:relative;
+  z-index:1;
+  width:min(1180px,calc(100% - 32px));
+  margin:0 auto;
+}
+
+section{
+  scroll-margin-top:92px;
+}
+
+.hero{
+  min-height:100vh;
+  padding:150px 0 90px;
+  display:grid;
+  grid-template-columns:1.02fr .98fr;
+  gap:34px;
+  align-items:center;
+}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  width:fit-content;
+  padding:10px 14px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:rgba(255,255,255,.07);
+  color:#fff4dd;
+  font-size:13px;
+  letter-spacing:.08em;
+  font-weight:950;
+}
+
+.star{
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:var(--gold2);
+  box-shadow:0 0 0 7px rgba(245,199,107,.12),0 0 24px rgba(245,199,107,.75);
+}
+
+h1{
+  margin:24px 0 24px;
+  font-size:clamp(58px,9vw,126px);
+  line-height:.84;
+  letter-spacing:-.11em;
+}
+
+.gold{
+  background:linear-gradient(135deg,#fff6d9,var(--gold2),var(--gold));
+  -webkit-background-clip:text;
+  color:transparent;
+}
+
+.lead{
+  max-width:650px;
+  color:var(--muted);
+  font-size:19px;
+  line-height:1.85;
+  letter-spacing:-.025em;
+  font-weight:500;
+}
+
+.actions{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-top:34px;
+}
+
+.btn{
+  display:inline-flex;
+  justify-content:center;
+  align-items:center;
+  padding:16px 23px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.07);
+  color:var(--cream);
+  font-weight:950;
+  transition:.25s;
+}
+
+.btn.primary{
+  color:#061326;
+  border:0;
+  background:linear-gradient(135deg,var(--gold2),var(--gold));
+  box-shadow:0 20px 48px rgba(245,199,107,.22);
+}
+
+.btn:hover{
+  transform:translateY(-5px);
+}
+
+.hero-visual{
+  min-height:640px;
+  position:relative;
+  border-radius:54px;
+  overflow:hidden;
+  border:1px solid var(--line);
+  box-shadow:var(--shadow);
+  background:
+    linear-gradient(180deg,rgba(6,19,38,.06),rgba(6,19,38,.86)),
+    url("https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&w=1500&q=80") center/cover;
+}
+
+.hero-visual::before{
+  content:"";
+  position:absolute;
+  right:21%;
+  top:12%;
+  width:7px;
+  height:210px;
+  border-radius:999px;
+  background:var(--gold2);
+  box-shadow:0 0 30px rgba(255,221,150,.9),0 0 90px rgba(255,221,150,.45);
+}
+
+.hero-visual::after{
+  content:"";
+  position:absolute;
+  right:14%;
+  top:26%;
+  width:120px;
+  height:6px;
+  border-radius:999px;
+  background:var(--gold2);
+  box-shadow:0 0 30px rgba(255,221,150,.85);
+}
+
+.hero-card{
+  position:absolute;
+  left:24px;
+  right:24px;
+  bottom:24px;
+  padding:26px;
+  border-radius:34px;
+  background:rgba(6,19,38,.72);
+  border:1px solid rgba(245,199,107,.24);
+  backdrop-filter:blur(22px);
+}
+
+.hero-card small{
+  color:var(--gold);
+  font-weight:950;
+  letter-spacing:.12em;
+}
+
+.hero-card h2{
+  margin:14px 0 8px;
+  font-size:38px;
+  line-height:1;
+  letter-spacing:-.075em;
+}
+
+.hero-card p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.7;
+}
+
+.quick-bar{
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:12px;
+  margin-top:-56px;
+  position:relative;
+  z-index:5;
+}
+
+.quick{
+  min-height:120px;
+  padding:18px;
+  border-radius:26px;
+  border:1px solid var(--line);
+  background:rgba(6,19,38,.74);
+  backdrop-filter:blur(22px);
+  box-shadow:0 24px 70px rgba(0,0,0,.28);
+  transition:.25s;
+}
+
+.quick:hover{
+  transform:translateY(-8px);
+  background:rgba(245,199,107,.12);
+}
+
+.quick i{
+  display:block;
+  font-style:normal;
+  font-size:25px;
+  margin-bottom:14px;
+}
+
+.quick b{
+  display:block;
+  font-size:16px;
+  letter-spacing:-.045em;
+}
+
+.content-section{
+  padding:100px 0;
+}
+
+.section-head{
+  display:grid;
+  grid-template-columns:.75fr 1.25fr;
+  gap:40px;
+  align-items:end;
+  margin-bottom:34px;
+}
+
+.eyebrow{
+  color:var(--gold);
+  font-size:13px;
+  letter-spacing:.14em;
+  font-weight:950;
+}
+
+h2{
+  margin:10px 0 0;
+  font-size:clamp(42px,6.4vw,80px);
+  line-height:.88;
+  letter-spacing:-.095em;
+}
+
+.bento{
+  display:grid;
+  grid-template-columns:1.15fr .85fr .85fr;
+  grid-auto-rows:minmax(250px,auto);
+  gap:18px;
+}
+
+.tile{
+  position:relative;
+  padding:30px;
+  overflow:hidden;
+  border-radius:36px;
+  border:1px solid var(--line);
+  background:var(--glass);
+  backdrop-filter:blur(22px);
+  box-shadow:0 24px 80px rgba(0,0,0,.25);
+  transition:.3s;
+}
+
+.tile:hover{
+  transform:translateY(-8px);
+  background:rgba(245,199,107,.11);
+}
+
+.tile.big{
+  grid-row:span 2;
+}
+
+.tile.wide{
+  grid-column:span 2;
+}
+
+.tile::after{
+  content:"";
+  position:absolute;
+  right:-70px;
+  bottom:-80px;
+  width:190px;
+  height:190px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(245,199,107,.32),transparent 70%);
+}
+
+.icon{
+  width:60px;
+  height:60px;
+  display:grid;
+  place-items:center;
+  border-radius:23px;
+  background:rgba(245,199,107,.13);
+  font-size:28px;
+  margin-bottom:30px;
+}
+
+.tile h3{
+  margin:0 0 12px;
+  font-size:29px;
+  letter-spacing:-.065em;
+}
+
+.tile p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.75;
+}
+
+.verse-section{
+  padding:100px 0;
+}
+
+.verse-box{
+  position:relative;
+  padding:54px;
+  border-radius:46px;
+  border:1px solid var(--line);
+  background:
+    linear-gradient(135deg,rgba(245,199,107,.12),rgba(255,255,255,.04)),
+    rgba(255,255,255,.06);
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+
+.verse-box::after{
+  content:"";
+  position:absolute;
+  right:-100px;
+  top:-100px;
+  width:340px;
+  height:340px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(245,199,107,.28),transparent 68%);
+}
+
+.verse-box h2{
+  max-width:850px;
+  margin:0;
+}
+
+.verse-box p{
+  max-width:650px;
+  margin:24px 0 0;
+  color:var(--muted);
+  font-size:18px;
+  line-height:1.85;
+}
+
+.pastor{
+  display:grid;
+  grid-template-columns:.85fr 1.15fr;
+  gap:28px;
+  align-items:center;
+}
+
+.pastor-img{
+  min-height:600px;
+  border-radius:999px 999px 46px 46px;
+  border:1px solid var(--line);
+  background:
+    linear-gradient(180deg,rgba(6,19,38,.03),rgba(6,19,38,.48)),
+    url("https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?auto=format&fit=crop&w=1000&q=80") center/cover;
+  box-shadow:var(--shadow);
+}
+
+.quote{
+  font-size:clamp(34px,5.2vw,72px);
+  line-height:1.06;
+  letter-spacing:-.09em;
+  margin:18px 0 24px;
+}
+
+.pastor p{
+  color:var(--muted);
+  font-size:18px;
+  line-height:1.9;
+}
+
+.sign{
+  color:var(--gold);
+  font-size:24px;
+  font-weight:950;
+  margin-top:26px;
+}
+
+.worship-board{
+  border:1px solid var(--line);
+  border-radius:40px;
+  overflow:hidden;
+  background:rgba(255,255,255,.06);
+  backdrop-filter:blur(22px);
+  box-shadow:var(--shadow);
+}
+
+.worship-row{
+  display:grid;
+  grid-template-columns:170px 1fr 220px;
+  border-bottom:1px solid var(--line);
+  align-items:center;
+}
+
+.worship-row:last-child{
+  border-bottom:0;
+}
+
+.worship-row div{
+  padding:28px;
+  border-right:1px solid var(--line);
+}
+
+.worship-row div:last-child{
+  border-right:0;
+}
+
+.day{
+  color:var(--gold);
+  font-size:28px;
+  font-weight:950;
+}
+
+.name{
+  font-size:34px;
+  letter-spacing:-.075em;
+  font-weight:950;
+}
+
+.time{
+  text-align:right;
+  color:var(--gold2);
+  font-size:22px;
+  font-weight:950;
+}
+
+.media-grid{
+  display:grid;
+  grid-template-columns:1.35fr .65fr;
+  gap:22px;
+}
+
+.youtube{
+  aspect-ratio:16/9;
+  border-radius:42px;
+  overflow:hidden;
+  border:1px solid var(--line);
+  background:#000;
+  box-shadow:var(--shadow);
+}
+
+.youtube iframe{
+  width:100%;
+  height:100%;
+  border:0;
+}
+
+.notice-list{
+  display:grid;
+  gap:14px;
+}
+
+.notice{
+  padding:22px;
+  border-radius:28px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.075);
+  backdrop-filter:blur(20px);
+  transition:.25s;
+}
+
+.notice:hover{
+  transform:translateY(-6px);
+  background:rgba(245,199,107,.12);
+}
+
+.notice b{
+  display:block;
+  margin-bottom:8px;
+  font-size:20px;
+  letter-spacing:-.05em;
+}
+
+.notice span{
+  color:var(--muted);
+  font-size:14px;
+}
+
+.location-grid{
+  display:grid;
+  grid-template-columns:1.15fr .85fr;
+  gap:24px;
+}
+
+.map{
+  min-height:480px;
+  border-radius:42px;
+  overflow:hidden;
+  border:1px solid var(--line);
+  box-shadow:var(--shadow);
+}
+
+.map iframe{
+  width:100%;
+  height:100%;
+  border:0;
+}
+
+.contact-card{
+  padding:38px;
+  border-radius:42px;
+  background:var(--cream);
+  color:#061326;
+  box-shadow:var(--shadow);
+}
+
+.contact-card h3{
+  margin:0 0 18px;
+  font-size:50px;
+  line-height:.95;
+  letter-spacing:-.09em;
+}
+
+.contact-card p{
+  color:#5c5144;
+  line-height:1.85;
+  font-weight:650;
+}
+
+.contact-card .btn{
+  color:#061326;
+  border-color:rgba(6,19,38,.16);
+}
+
+footer{
+  padding:50px 0 90px;
+  color:var(--muted);
+  text-align:center;
+}
+
+.reveal{
+  opacity:0;
+  transform:translateY(28px);
+  transition:.75s ease;
+}
+
+.reveal.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+@media(max-width:1080px){
+  .nav,
+  .header-cta{
+    display:none;
+  }
+
+  .mobile-menu-btn{
+    display:block;
+  }
+
+  .quick-bar{
+    grid-template-columns:repeat(3,1fr);
+    margin-top:24px;
+  }
+}
+
+@media(max-width:900px){
+  .hero{
+    grid-template-columns:1fr;
+    padding-top:120px;
+  }
+
+  .section-head,
+  .pastor,
+  .media-grid,
+  .location-grid{
+    grid-template-columns:1fr;
+  }
+
+  .bento{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .tile.big,
+  .tile.wide{
+    grid-column:auto;
+    grid-row:auto;
+  }
+
+  .hero-visual,
+  .pastor-img{
+    min-height:460px;
+  }
+}
+
+@media(max-width:620px){
+  .header{
+    height:72px;
+  }
+
+  .header-inner{
+    width:calc(100% - 22px);
+  }
+
+  .brand-mark{
+    width:38px;
+    height:38px;
+    border-radius:14px;
+  }
+
+  .brand-text b{
+    font-size:18px;
+  }
+
+  .brand-text span{
+    font-size:9px;
+  }
+
+  .wrap{
+    width:calc(100% - 22px);
+  }
+
+  h1{
+    font-size:58px;
+  }
+
+  h2{
+    font-size:46px;
+  }
+
+  .lead{
+    font-size:16px;
+  }
+
+  .quick-bar,
+  .bento{
+    grid-template-columns:1fr;
+  }
+
+  .hero-visual{
+    min-height:500px;
+    border-radius:36px;
+  }
+
+  .hero-card{
+    left:16px;
+    right:16px;
+    bottom:16px;
+    padding:20px;
+  }
+
+  .hero-card h2{
+    font-size:30px;
+  }
+
+  .verse-box{
+    padding:30px;
+    border-radius:34px;
+  }
+
+  .worship-row{
+    grid-template-columns:1fr;
+  }
+
+  .worship-row div{
+    border-right:0;
+    border-bottom:1px solid var(--line);
+  }
+
+  .worship-row div:last-child{
+    border-bottom:0;
+  }
+
+  .time{
+    text-align:left;
+  }
+
+  .contact-card h3{
+    font-size:40px;
+  }
+
+  .mobile-list a{
+    grid-template-columns:46px 1fr;
+    padding:18px;
+  }
+
+  .mobile-list span{
+    font-size:23px;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="noise"></div>
+<div class="light-cross"></div>
+
+<header class="header">
+  <div class="header-inner">
+    <a class="brand" href="#home">
+      <span class="brand-mark">十</span>
+      <span class="brand-text">
+        <b>사랑빛교회</b>
+        <span>SARANGBIT CHURCH</span>
+      </span>
+    </a>
+
+    <nav class="nav" id="topNav">
+      <a href="#home" class="active">홈</a>
+      <a href="#about">교회소개</a>
+      <a href="#vision">교회비전</a>
+      <a href="#pastor">담임목사 인사말</a>
+      <a href="#worship">예배안내</a>
+      <a href="#youtube">유튜브</a>
+      <a href="#notice">공지사항</a>
+      <a href="#location">오시는 길</a>
+    </nav>
+
+    <a class="header-cta" href="#worship">예배안내</a>
+    <button class="mobile-menu-btn" type="button" onclick="openMenu()">메뉴</button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-head">
+    <a class="brand" href="#home" onclick="closeMenu()">
+      <span class="brand-mark">十</span>
+      <span class="brand-text">
+        <b>사랑빛교회</b>
+        <span>SARANGBIT CHURCH</span>
+      </span>
+    </a>
+    <button class="close-btn" type="button" onclick="closeMenu()">닫기</button>
+  </div>
+
+  <div class="mobile-list">
+    <a href="#home" onclick="closeMenu()"><b>00</b><span>홈</span></a>
+    <a href="#about" onclick="closeMenu()"><b>01</b><span>교회소개</span></a>
+    <a href="#vision" onclick="closeMenu()"><b>02</b><span>교회비전</span></a>
+    <a href="#pastor" onclick="closeMenu()"><b>03</b><span>담임목사 인사말</span></a>
+    <a href="#worship" onclick="closeMenu()"><b>04</b><span>예배안내</span></a>
+    <a href="#youtube" onclick="closeMenu()"><b>05</b><span>유튜브</span></a>
+    <a href="#notice" onclick="closeMenu()"><b>06</b><span>공지사항</span></a>
+    <a href="#location" onclick="closeMenu()"><b>07</b><span>오시는 길</span></a>
+  </div>
+</div>
+
+<main class="wrap">
+
+<section class="hero" id="home">
+  <div class="reveal">
+    <span class="badge"><span class="star"></span> GOD IS LOVE · 1 JOHN 4:16</span>
+    <h1>
+      하나님은<br>
+      <span class="gold">사랑</span>이시라
+    </h1>
+    <p class="lead">
+      우리가 서로 사랑하면 하나님이 우리 안에 거하시고,
+      그 사랑이 우리 안에서 온전하게 됩니다.
+      사랑빛교회는 예배와 말씀, 공동체를 통해 하나님의 사랑을 흘려보내는 교회입니다.
+    </p>
+
+    <div class="actions">
+      <a class="btn primary" href="#worship">예배 시간 보기</a>
+      <a class="btn" href="#location">처음 오셨나요?</a>
+    </div>
+  </div>
+
+  <div class="hero-visual reveal">
+    <div class="hero-card">
+      <small>NEXT WORSHIP</small>
+      <h2>주일예배 · 오전 11:00</h2>
+      <p>이번 주 말씀: 하나님은 사랑이시라 · 요한일서 4:16</p>
+    </div>
+  </div>
+</section>
+
+<div class="quick-bar reveal">
+  <a class="quick" href="#worship">
+    <i>⛪</i>
+    <b>예배안내</b>
+  </a>
+  <a class="quick" href="#about">
+    <i>👥</i>
+    <b>교회소개</b>
+  </a>
+  <a class="quick" href="#pastor">
+    <i>👤</i>
+    <b>담임목사 인사말</b>
+  </a>
+  <a class="quick" href="#notice">
+    <i>📄</i>
+    <b>공지사항</b>
+  </a>
+  <a class="quick" href="#youtube">
+    <i>▶️</i>
+    <b>유튜브</b>
+  </a>
+  <a class="quick" href="#location">
+    <i>📍</i>
+    <b>오시는 길</b>
+  </a>
+</div>
+
+<section class="content-section" id="about">
+  <div class="section-head reveal">
+    <div>
+      <div class="eyebrow">ABOUT CHURCH</div>
+      <h2>교회소개</h2>
+    </div>
+    <p class="lead">
+      사랑빛교회는 처음 방문한 분도 편안히 머물 수 있는 따뜻한 공동체입니다.
+      예배 안에서 하나님을 만나고 말씀 안에서 삶의 방향을 발견합니다.
+    </p>
+  </div>
+
+  <div class="bento reveal">
+    <div class="tile big">
+      <div class="icon">🕊️</div>
+      <h3>예배하는 교회</h3>
+      <p>
+        하나님을 향한 진실한 예배가 삶의 방향을 바꾼다고 믿습니다.
+        찬양과 말씀, 기도 안에서 하나님의 임재를 경험합니다.
+      </p>
+    </div>
+
+    <div class="tile">
+      <div class="icon">📖</div>
+      <h3>말씀</h3>
+      <p>성경의 진리가 오늘의 삶에 실제적인 기준이 되도록 돕습니다.</p>
+    </div>
+
+    <div class="tile">
+      <div class="icon">🤍</div>
+      <h3>사랑의 공동체</h3>
+      <p>서로의 삶을 위해 기도하고 함께 믿음의 길을 걸어갑니다.</p>
+    </div>
+
+    <div class="tile wide" id="vision">
+      <div class="icon">🌱</div>
+      <h3>다음세대와 지역을 섬기는 교회</h3>
+      <p>
+        아이들과 청년들이 복음 안에서 자라도록 돕고,
+        지역사회에 하나님의 사랑을 흘려보냅니다.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="verse-section">
+  <div class="verse-box reveal">
+    <h2>“하나님은 사랑이시라”</h2>
+    <p>
+      사랑빛교회는 하나님의 사랑을 예배로 고백하고,
+      말씀으로 배우며, 삶의 자리에서 이웃에게 흘려보내는 공동체가 되기를 꿈꿉니다.
+    </p>
+  </div>
+</section>
+
+<section class="content-section" id="pastor">
+  <div class="pastor">
+    <div class="pastor-img reveal"></div>
+
+    <div class="reveal">
+      <div class="eyebrow">PASTOR MESSAGE</div>
+      <div class="quote">
+        “교회는 사랑이 필요한 사람들이 하나님의 사랑 안에서 다시 일어나는 자리입니다.”
+      </div>
+      <p>
+        사랑빛교회 홈페이지를 방문해주신 여러분을 진심으로 환영합니다.
+        이곳에서 예배의 기쁨을 회복하고, 말씀 안에서 삶의 방향을 발견하며,
+        공동체 안에서 다시 일어나는 은혜를 경험하시길 축복합니다.
+      </p>
+      <div class="sign">담임목사 김사랑</div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section" id="worship">
+  <div class="section-head reveal">
+    <div>
+      <div class="eyebrow">WORSHIP GUIDE</div>
+      <h2>예배안내</h2>
+    </div>
+    <p class="lead">
+      모든 예배는 누구에게나 열려 있습니다.
+      처음 방문하시는 분도 편안하게 함께하실 수 있습니다.
+    </p>
+  </div>
+
+  <div class="worship-board reveal">
+    <div class="worship-row">
+      <div class="day">SUN</div>
+      <div class="name">주일 1부 예배</div>
+      <div class="time">오전 9:00</div>
+    </div>
+    <div class="worship-row">
+      <div class="day">SUN</div>
+      <div class="name">주일 2부 예배</div>
+      <div class="time">오전 11:00</div>
+    </div>
+    <div class="worship-row">
+      <div class="day">WED</div>
+      <div class="name">수요기도회</div>
+      <div class="time">오후 7:30</div>
+    </div>
+    <div class="worship-row">
+      <div class="day">DAWN</div>
+      <div class="name">새벽기도회</div>
+      <div class="time">화-금 오전 5:30</div>
+    </div>
+  </div>
+</section>
+
+<section class="content-section" id="youtube">
+  <div class="section-head reveal">
+    <div>
+      <div class="eyebrow">YOUTUBE</div>
+      <h2>교회유튜브<br>공지사항</h2>
+    </div>
+    <p class="lead">
+      주일설교, 찬양, 특별집회 영상과 교회 소식을 온라인으로 함께 확인하실 수 있습니다.
+    </p>
+  </div>
+
+  <div class="media-grid reveal">
+    <div class="youtube">
+      <iframe src="https://www.youtube.com/embed/live_stream?channel=UC_x5XG1OV2P6uZZ5FSM9Ttw" allowfullscreen></iframe>
+    </div>
+
+    <div class="notice-list" id="notice">
+      <a class="notice" href="#">
+        <b>새가족 환영 모임 안내</b>
+        <span>2026.04.27 · 주일 예배 후</span>
+      </a>
+      <a class="notice" href="#">
+        <b>다음세대 여름수련회 신청</b>
+        <span>2026.04.20 · 온라인 신청</span>
+      </a>
+      <a class="notice" href="#">
+        <b>주일 차량 운행 시간 변경</b>
+        <span>2026.04.13 · 셔틀 시간 변경</span>
+      </a>
+      <a class="notice" href="#">
+        <b>금요기도회 특별집회</b>
+        <span>2026.04.06 · 본당</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="content-section" id="location">
+  <div class="section-head reveal">
+    <div>
+      <div class="eyebrow">LOCATION</div>
+      <h2>오시는 길</h2>
+    </div>
+    <p class="lead">
+      처음 방문하시는 분도 편안히 오실 수 있도록 안내합니다.
+    </p>
+  </div>
+
+  <div class="location-grid">
+    <div class="map reveal">
+      <iframe src="https://maps.google.com/maps?q=Seoul%20Korea&t=&z=13&ie=UTF8&iwloc=&output=embed"></iframe>
+    </div>
+
+    <div class="contact-card reveal">
+      <h3>사랑빛교회</h3>
+      <p>
+        주소: 서울특별시 은평구 은혜로 123<br>
+        전화: 02-123-4567<br>
+        이메일: church@example.com
+      </p>
+      <div class="actions">
+        <a class="btn primary" href="#worship">예배 시간 확인</a>
+        <a class="btn" href="mailto:church@example.com">문의하기</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <b>사랑빛교회</b><br>
+  Copyright © 2026 Sarangbit Church. All rights reserved.
+</footer>
+
+</main>
+
+<script>
+function openMenu(){
+  document.getElementById("mobileMenu").classList.add("open");
+}
+
+function closeMenu(){
+  document.getElementById("mobileMenu").classList.remove("open");
+}
+
+const revealObserver = new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add("show");
+    }
+  });
+},{threshold:.14});
+
+document.querySelectorAll(".reveal").forEach(el=>revealObserver.observe(el));
+
+const navLinks = document.querySelectorAll("#topNav a");
+const sections = document.querySelectorAll("main section, .hero");
+
+function setActiveMenu(){
+  let current = "home";
+
+  sections.forEach(section=>{
+    const rect = section.getBoundingClientRect();
+    if(rect.top <= window.innerHeight * 0.42 && rect.bottom >= window.innerHeight * 0.42){
+      current = section.id;
+    }
+  });
+
+  navLinks.forEach(link=>{
+    link.classList.toggle("active", link.getAttribute("href") === "#" + current);
+  });
+}
+
+window.addEventListener("scroll", setActiveMenu);
+setActiveMenu();
+</script>
+
+</body>
+</html>
